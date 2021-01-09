@@ -4,17 +4,20 @@ class FundaSpider(scrapy.Spider):
     name = "funda"
 
     start_urls = [
-        'https://www.funda.nl/en/koop/gouda/',
+        'https://www.funda.nl/en/koop/almere/',
         # 'https://www.funda.nl/en/koop/heel-nederland/',
         # 'https://www.funda.nl/en/koop/provincie-noord-holland/',
     ]
 
     def parse(self, response):
-        # scrape every item on current page
-        # if need to filter out house/appartment, should base on url
         urls = []
         for item in response.css('li.search-result'):
-            urls.append(response.urljoin(item.css('[data-object-url-tracking=resultlist]::attr(href)').get()))
+            url_suffix = item.css('[data-object-url-tracking=resultlist]::attr(href)').get()
+            # only houses but not appartment due to personal preference
+            if url_suffix.split('/')[-2][:4] == 'huis':
+                urls.append(response.urljoin(url_suffix))
+
+        # scrape every item
         for url in urls:
             yield scrapy.Request(url, callback=self.parse_item)
 
@@ -30,12 +33,12 @@ class FundaSpider(scrapy.Spider):
 
         yield {
             'address': response.css('span.object-header__title::text').get(),
-            'postcode': source_json['postcode'],
-            'place': source_json['plaats'],
-            'price': source_json['vraagprijs'],
+            'postcode': source_json['postcode'] if 'postcode' in source_json else None,
+            'place': source_json['plaats'] if 'plaats' in source_json else None,
+            'price': source_json['vraagprijs'] if 'vraagprijs' in source_json else None,
             'photo': response.css('div.object-media-foto').css('img::attr(src)').get(),
-            'living_area': source_json['woonoppervlakte'],
-            'year': source_json['bouwjaar'],
+            'living_area': int(source_json['woonoppervlakte']) if 'woonoppervlakte' in source_json else None,
+            'year': source_json['bouwjaar'] if 'bouwjaar' in source_json else None,
             'url': response.url,
 
             # TODO: fix, cannot get value from second page on
