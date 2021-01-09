@@ -1,5 +1,7 @@
-# fundaSpider
-Scraper to obtain retrieve listing real-state for sale from https://www.funda.nl/en/koop/
+# Web Spiders about real-estate in NL
 
+For funda data:
+```scrapy crawl funda -o funda.json```
 
-For example, in root directory, run ```scrapy crawl funda -o funda.json```
+For immigrant data
+```scrapy crawl immigrant -o immigrant.json```

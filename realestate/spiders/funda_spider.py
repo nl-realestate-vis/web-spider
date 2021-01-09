@@ -30,7 +30,7 @@ class FundaSpider(scrapy.Spider):
 
         yield {
             'address': response.css('span.object-header__title::text').get(),
-            'post_code': source_json['postcode'],
+            'postcode': source_json['postcode'],
             'place': source_json['plaats'],
             'price': source_json['vraagprijs'],
             'photo': response.css('div.object-media-foto').css('img::attr(src)').get(),
