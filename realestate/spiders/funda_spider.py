@@ -10,13 +10,11 @@ class FundaSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
-        # collect urls of all listing real state items
+        # scrape every item on current page
         # if need to filter out house/appartment, should base on url
         urls = []
         for item in response.css('li.search-result'):
             urls.append(response.urljoin(item.css('[data-object-url-tracking=resultlist]::attr(href)').get()))
-        
-        # scrape every item on current page
         for url in urls:
             yield scrapy.Request(url, callback=self.parse_item)
 

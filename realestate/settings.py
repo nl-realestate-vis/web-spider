@@ -7,14 +7,14 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'funda'
+BOT_NAME = 'realestate'
 
-SPIDER_MODULES = ['funda.spiders']
-NEWSPIDER_MODULE = 'funda.spiders'
+SPIDER_MODULES = ['realestate.spiders']
+NEWSPIDER_MODULE = 'realestate.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'funda (+http://www.yourdomain.com)'
+#USER_AGENT = 'realestate (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
